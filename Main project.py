@@ -1,7 +1,8 @@
 from nltk.corpus import wordnet as wn
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-
+import os
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 def Input():
     while True:
