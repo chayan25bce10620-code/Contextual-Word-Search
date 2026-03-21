@@ -55,9 +55,11 @@ def scoring():
 # TODO:
 # priority 1 - fix repeated words in output
 # priority 2 - clean up output
+# priority 3 - ensure clean output in console by moving os fix to the top before ML library is uplaoded
 # cleanup 1 - remove print statement
 # cleanup 2 - remove placeholder input
 # task for later - edge cases such as short sentences or no synonyms
+
 
 
 print(scoring())
