@@ -52,7 +52,12 @@ def scoring():
     pairs=list(zip(synsets,scores))
     return pairs
     
-    
+# TODO:
+# priority 1 - fix repeated words in output
+# priority 2 - clean up output
+# cleanup 1 - remove print statement
+# cleanup 2 - remove placeholder input
+# task for later - edge cases such as short sentences or no synonyms
 
 
 print(scoring())
