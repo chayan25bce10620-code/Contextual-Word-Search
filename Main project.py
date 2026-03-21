@@ -33,21 +33,23 @@ def ComparisonSentence():
     for i in Synsets:
         s=sentence.replace(word, i)
         sentence_list.append(s)
-    return sentence_list,sentence
+    return sentence_list,sentence,Synsets
 
 def encoder():
+    ComparisonSenten=ComparisonSentence()
     model=SentenceTransformer("all-MiniLM-L6-v2")
-    batch,sentence=ComparisonSentence()[0],ComparisonSentence()[1]
+    batch,sentence,synsets=ComparisonSenten[0],ComparisonSenten[1],ComparisonSenten[2]
     encoded_vector=model.encode(batch)
     og=model.encode(sentence)
     og_reshaped=og.reshape(1,-1) 
-    return og_reshaped,encoded_vector
+    return og_reshaped,encoded_vector,synsets
 
 def scoring():
-    og_reshaped,candidate_batch=encoder()[0],encoder()[1]
+    encodr=encoder()
+    og_reshaped,candidate_batch,synsets=encodr[0],encodr[1],encodr[2]
     scores=cosine_similarity(og_reshaped,candidate_batch)
     scores=scores.flatten()
-    pairs=list(zip(candidate_batch,scores))
+    pairs=list(zip(synsets,scores))
     return pairs
     
     
