@@ -1,4 +1,6 @@
 from nltk.corpus import wordnet as wn
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 def Input():
@@ -30,7 +32,24 @@ def ComparisonSentence():
     for i in Synsets:
         s=sentence.replace(word, i)
         sentence_list.append(s)
-    return sentence_list
+    return sentence_list,sentence
+
+def encoder():
+    model=SentenceTransformer("all-MiniLM-L6-v2")
+    batch,sentence=ComparisonSentence()[0],ComparisonSentence()[1]
+    encoded_vector=model.encode(batch)
+    og=model.encode(sentence)
+    og_reshaped=og.reshape(1,-1) 
+    return og_reshaped,encoded_vector
+
+def scoring():
+    og_reshaped,candidate_batch=encoder()[0],encoder()[1]
+    scores=cosine_similarity(og_reshaped,candidate_batch)
+    scores=scores.flatten()
+    pairs=list(zip(candidate_batch,scores))
+    return pairs
+    
+    
 
 
-print(ComparisonSentence())
+print(scoring())
