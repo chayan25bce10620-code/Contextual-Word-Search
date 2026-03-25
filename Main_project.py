@@ -73,9 +73,5 @@ if button:
 # task for later - edge cases such as short sentences or no synonyms
 
 
-if __name__ == "__main__":
-    import subprocess
-    subprocess.run(["streamlit", "run", __file__])
-
-
 # Issue is with Ranking() function. maybe not compatible with the UI? or im running the UI wrong. Worked when using playground.
+# I was running the UI wrong. Needs to be run in console with "streamlit run Main_project.py"
