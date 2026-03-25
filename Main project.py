@@ -1,8 +1,8 @@
+
 from nltk.corpus import wordnet as wn
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-import os
-os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+
 
 def Input():
     while True:
@@ -17,13 +17,15 @@ def Input():
     return [sen,word]
 
 def FetchCandidates(word):
-    L=[]
+    L=set()
     for ss in wn.synsets(word):
-        for word in ss.lemma_names():
-            L.append(word)
-    if len(L)>15:
-        L[:]=L[:15]
-    return L
+        for w in ss.lemma_names():
+            if w != word:
+                L.add(w)
+    Li=list(L)
+    if len(Li)>15:
+        Li[:]=Li[:15]
+    return Li
 
 def ComparisonSentence():
     inp=Input()
