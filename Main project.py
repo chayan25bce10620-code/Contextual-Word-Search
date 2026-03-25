@@ -8,18 +8,6 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-def Input():
-    while True:
-        #sen=input("Enter full sentence:")
-        #word=input("Enter word that needs to be replaced:")
-        sen = 'i am drunk' #remember to remove these temp assignments
-        word='drunk'
-        if word not in sen:
-            print("Word not in sentence. Please make sure the word is in the sentence.")
-        else:
-            break
-    return [sen,word]
-
 def FetchCandidates(word):
     L=set()
     for ss in wn.synsets(word):
@@ -31,48 +19,62 @@ def FetchCandidates(word):
         Li[:]=Li[:15]
     return Li
 
-def ComparisonSentence():
-    inp=Input()
-    sentence,word=inp[0],inp[1]
+def ComparisonSentence(sentence,word):
     Synsets=FetchCandidates(word)
     sentence_list=[]
     for i in Synsets:
         s=sentence.replace(word, i)
         sentence_list.append(s)
-    return sentence_list,sentence,Synsets
+    return sentence_list,Synsets
 
-def encoder():
-    ComparisonSenten=ComparisonSentence()
+def encoder(sentence,word):
+    ComparisonSenten=ComparisonSentence(sentence,word)
     model=SentenceTransformer("all-MiniLM-L6-v2")
-    batch,sentence,synsets=ComparisonSenten[0],ComparisonSenten[1],ComparisonSenten[2]
+    batch,synsets=ComparisonSenten[0],ComparisonSenten[1]
     encoded_vector=model.encode(batch)
     og=model.encode(sentence)
     og_reshaped=og.reshape(1,-1) 
     return og_reshaped,encoded_vector,synsets
 
-def scoring():
-    encodr=encoder()
+def scoring(sentence,word):
+    encodr=encoder(sentence,word)
     og_reshaped,candidate_batch,synsets=encodr[0],encodr[1],encodr[2]
     scores=cosine_similarity(og_reshaped,candidate_batch)
     scores=scores.flatten()
     pairs=list(zip(synsets,scores))
     return pairs
     
-def ranking():
-    score=scoring()
+def ranking(sentence,word):
+    score=scoring(sentence,word)
     ranked=sorted(score,key=lambda x:x[1],reverse=True)
     print("Ranked Similarity:")
     for i in range(15):
         print(f"{i+1}. {ranked[i][0]}")
+
+def UI():
+    import streamlit as stl
+    stl.title("Contextual Word Search")
+    sentence=stl.text_input("Please enter your Sentence")
+    word= stl.text_input("Word to replace")
+    button=stl.button("suggest")
+    if button:
+        if word not in sentence:
+            stl.error("Word not in sentence. Please make sure the word is in the sentence.")
+        else:
+            results=ranking()
+            stl.subheader("Suggestions:")
+            for i,(w,score) in enumerate(results,1):
+                stl.write(f"{i}.{w}-score:{round(score,2)}")
+
     
 # TODO:
-# priority 1 - fix repeated words in output *done*
-# priority 2 - clean up output *done*
-# priority 3 - ensure clean output in console by moving os fix to the top before ML library is uplaoded *done*
-# priority 4 - Fix work ranking. Ranking is inaccurate as of now. 
+# priority 1 - Fix work ranking. Ranking is inaccurate as of now. 
+# priority 2 - UI. Need to make UI.
 # cleanup 1 - remove print statement
 # cleanup 2 - remove placeholder input
 # task for later - edge cases such as short sentences or no synonyms
 
 
-ranking()
+if __name__ == "__main__":
+    import subprocess
+    subprocess.run(["streamlit", "run", __file__])
