@@ -1,3 +1,7 @@
+import os
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
+os.environ["HF_HUB_VERBOSITY"] = "error"
 
 from nltk.corpus import wordnet as wn
 from sentence_transformers import SentenceTransformer
@@ -54,14 +58,21 @@ def scoring():
     pairs=list(zip(synsets,scores))
     return pairs
     
+def ranking():
+    score=scoring()
+    ranked=sorted(score,key=lambda x:x[1],reverse=True)
+    print("Ranked Similarity:")
+    for i in range(15):
+        print(f"{i+1}. {ranked[i][0]}")
+    
 # TODO:
-# priority 1 - fix repeated words in output
-# priority 2 - clean up output
-# priority 3 - ensure clean output in console by moving os fix to the top before ML library is uplaoded
+# priority 1 - fix repeated words in output *done*
+# priority 2 - clean up output *done*
+# priority 3 - ensure clean output in console by moving os fix to the top before ML library is uplaoded *done*
+# priority 4 - Fix work ranking. Ranking is inaccurate as of now. 
 # cleanup 1 - remove print statement
 # cleanup 2 - remove placeholder input
 # task for later - edge cases such as short sentences or no synonyms
 
 
-
-print(scoring())
+ranking()
