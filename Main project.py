@@ -47,29 +47,27 @@ def scoring(sentence,word):
 def ranking(sentence,word):
     score=scoring(sentence,word)
     ranked=sorted(score,key=lambda x:x[1],reverse=True)
-    print("Ranked Similarity:")
-    for i in range(15):
-        print(f"{i+1}. {ranked[i][0]}")
+    return ranked
 
-def UI():
-    import streamlit as stl
-    stl.title("Contextual Word Search")
-    sentence=stl.text_input("Please enter your Sentence")
-    word= stl.text_input("Word to replace")
-    button=stl.button("suggest")
-    if button:
-        if word not in sentence:
-            stl.error("Word not in sentence. Please make sure the word is in the sentence.")
-        else:
-            results=ranking()
-            stl.subheader("Suggestions:")
-            for i,(w,score) in enumerate(results,1):
-                stl.write(f"{i}.{w}-score:{round(score,2)}")
+
+import streamlit as st
+st.title("Contextual Word Search")
+sentence=st.text_input("Please enter your Sentence")
+word= st.text_input("Word to replace")
+button=st.button("suggest")
+if button:
+    if word not in sentence:
+        st.error("Word not in sentence. Please make sure the word is in the sentence.")
+    else:
+        results=ranking(sentence,word)
+        st.subheader("Suggestions:")
+        for i,(w,score) in enumerate(results,1):
+            st.write(f"{i}.{w}-score:{round(score,2)}")
 
     
 # TODO:
 # priority 1 - Fix work ranking. Ranking is inaccurate as of now. 
-# priority 2 - UI. Need to make UI.
+# priority 2 - Need to fix UI. 
 # cleanup 1 - remove print statement
 # cleanup 2 - remove placeholder input
 # task for later - edge cases such as short sentences or no synonyms
