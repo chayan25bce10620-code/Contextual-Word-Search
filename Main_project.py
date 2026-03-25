@@ -76,3 +76,6 @@ if button:
 if __name__ == "__main__":
     import subprocess
     subprocess.run(["streamlit", "run", __file__])
+
+
+# Issue is with Ranking() function. maybe not compatible with the UI? or im running the UI wrong. Worked when using playground.
