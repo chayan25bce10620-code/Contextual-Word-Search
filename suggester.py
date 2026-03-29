@@ -49,29 +49,7 @@ def ranking(sentence,word):
     ranked=sorted(score,key=lambda x:x[1],reverse=True)
     return ranked
 
-
-import streamlit as st
-st.title("Contextual Word Search")
-sentence=st.text_input("Please enter your Sentence")
-word= st.text_input("Word to replace")
-button=st.button("suggest")
-if button:
-    if word not in sentence:
-        st.error("Word not in sentence. Please make sure the word is in the sentence.")
-    else:
-        results=ranking(sentence,word)
-        st.subheader("Suggestions:")
-        for i,(w,score) in enumerate(results,1):
-            st.write(f"{i}.{w}-score:{round(score,2)}")
-
     
 # TODO:
 # priority 1 - Fix work ranking. Ranking is inaccurate as of now. 
-# priority 2 - Need to fix UI. 
-# cleanup 1 - remove print statement
-# cleanup 2 - remove placeholder input
-# task for later - edge cases such as short sentences or no synonyms
 
-
-# Issue is with Ranking() function. maybe not compatible with the UI? or im running the UI wrong. Worked when using playground.
-# I was running the UI wrong. Needs to be run in console with "streamlit run Main_project.py"
