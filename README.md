@@ -47,12 +47,12 @@ Word     : drunk
 
 ## Project Structure
 
-​```
-├── app.py                # Streamlit UI
-├── suggester.py          # synonym suggester logic
+```
+├── app.py              # Streamlit UI
+├── suggester.py        # synonym suggester logic
 ├── requirements.txt
 └── README.md
-​```
+```
 
 ---
 
