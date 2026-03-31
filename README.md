@@ -35,13 +35,13 @@ streamlit run app.py
 Enter your original setence, Word to be replaced, and click suggest. The ranked list will then be generated below.
 
 **Example output:**
-
+```
 Sentence : I am drunk.
 Word     : drunk
 1. drink — 0.86
 2. drunkard  — 0.79
 3. booze    — 0.76
-
+```
 
 ---
 
